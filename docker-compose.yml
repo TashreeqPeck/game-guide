@@ -1,0 +1,20 @@
+services:
+  app:
+    image: ghcr.io/tashreeqpeck/game-guide:latest
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      AUTH_MODE: oidc
+      DATABASE_PATH: /data/app.db
+      BODY_SIZE_LIMIT: ${MAX_UPLOAD_BYTES:-2097152}
+      PROTOCOL_HEADER: x-forwarded-proto
+      HOST_HEADER: x-forwarded-host
+    volumes:
+      - app-data:/data
+
+volumes:
+  app-data:
