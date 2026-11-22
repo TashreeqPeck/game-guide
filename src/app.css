@@ -28,3 +28,15 @@ body {
 .prose-guide a {
 	@apply text-blue-400 underline;
 }
+
+.prose-guide table {
+	@apply my-3 w-full border-collapse text-left text-xs;
+}
+
+.prose-guide :is(th, td) {
+	@apply border border-zinc-700 px-2 py-1 align-top;
+}
+
+.prose-guide th {
+	@apply bg-zinc-900 font-medium text-zinc-100;
+}
