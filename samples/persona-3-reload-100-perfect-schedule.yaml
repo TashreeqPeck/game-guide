@@ -1,0 +1,68 @@
+game:
+  slug: persona-3-reload
+  title: Persona 3 Reload
+guide:
+  slug: 100-perfect-schedule
+  title: 100% Perfect Schedule Guide
+  author: HayateButler
+  source: https://steamcommunity.com/sharedfiles/filedetails/?id=3152126765
+sections:
+  - id: p3r-april
+    title: April
+    children:
+      - id: p3r-apr-24
+        title: Friday, April 24
+        children:
+          - id: p3r-apr-24-after-school
+            title: After School
+            items:
+              - id: p3r-apr-24-as-nurse
+                text: School Nurse's Office (Drink Medicine)
+              - id: p3r-apr-24-as-chariot-2
+                text: Chariot Rank 2
+                notes_md: "Best Answers: 2>A>A"
+                tags: [social-link, chariot]
+              - id: p3r-apr-24-as-strength-flag-2
+                text: Strength Flag #2 (Greet Yuko & Ask to walk home with her)
+                tags: [social-link, strength]
+              - id: p3r-apr-24-as-strength-1
+                text: Strength Rank 1
+                tags: [social-link, strength]
+          - id: p3r-apr-24-evening
+            title: Evening
+            items:
+              - id: p3r-apr-24-ev-arcade-house
+                text: "Game Parade Arcade: House of the Deceased"
+      - id: p3r-apr-25
+        title: Saturday, April 25
+        children:
+          - id: p3r-apr-25-after-school
+            title: After School
+            items:
+              - id: p3r-apr-25-as-strength-2
+                text: Strength Rank 2
+                notes_md: "Best Answers: 1>2>1"
+                tags: [social-link, strength]
+          - id: p3r-apr-25-evening
+            title: Evening
+            items:
+              - id: p3r-apr-25-ev-pharmacy
+                text: Aohige Pharmacy sale — buy Muscle Drink (Elizabeth Request #1)
+                tags: [request, elizabeth]
+  - id: p3r-may-part-1
+    title: May (Part 1)
+    children:
+      - id: p3r-may-12
+        title: Tuesday, May 12
+        children:
+          - id: p3r-may-12-after-school
+            title: After School
+            items:
+              - id: p3r-may-12-junpei-le-1
+                text: Junpei Link Episode 1
+                tags: [link-episode, junpei]
+  - id: p3r-reference
+    title: Guide notes
+    body_md: |
+      This sample is a shortened YAML port of the Steam schedule guide structure.
+      Upload a fuller file to track the complete walkthrough day-by-day.

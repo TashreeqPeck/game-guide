@@ -1,0 +1,27 @@
+game: { slug: example-game, title: Example Game }
+guide:
+  slug: full-completion
+  title: Full Completion Guide
+  author: Sample Author
+  source: https://example.com/guide
+sections:
+  - id: act-1
+    title: Act 1
+    body_md: Optional intro shown above the checklist.
+    children:
+      - id: act-1-town
+        title: Town
+        items:
+          - id: act-1-town-talk-to-mayor
+            text: Talk to the mayor
+            notes_md: Unlocks the shop
+            tags: [quest, main]
+          - id: act-1-town-open-chest
+            text: Open the town chest
+            tags: [collectible]
+  - id: reference-tables
+    title: Reference
+    body_md: |
+      | Stat | Max |
+      |------|-----|
+      | Str  | 99  |
