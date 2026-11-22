@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Self from './ChecklistTree.svelte';
 	import type { ChecklistItem, ChecklistSection } from './checklist-types';
+	import { buildToggleAction } from './checklist-url';
 
 	let {
 		sections,
@@ -62,7 +63,7 @@
 							{#each section.items as item (item.id)}
 								{#if itemVisible(item)}
 									<li id={`item-${item.id}`}>
-										<form method="POST" action="?/toggle" class="flex min-h-11 items-start gap-3 rounded-xl bg-zinc-950 p-3">
+										<form method="POST" action={buildToggleAction(filterTag, hideCompleted)} class="flex min-h-11 items-start gap-3 rounded-xl bg-zinc-950 p-3">
 											<input type="hidden" name="itemId" value={item.id} />
 											<input type="hidden" name="checked" value={item.checked ? '0' : '1'} />
 											<button
