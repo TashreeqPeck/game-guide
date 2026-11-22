@@ -1,5 +1,6 @@
 <script lang="ts">
 	import ChecklistTree from '$lib/components/ChecklistTree.svelte';
+	import { playthroughListQuery } from '$lib/playthrough-query';
 
 	let { data } = $props();
 
@@ -10,15 +11,11 @@
 	);
 
 	function buildQuery(tag: string, hideCompleted: boolean) {
-		const params = new URLSearchParams();
-		if (tag.length > 0) {
-			params.set('tag', tag);
+		const qs = playthroughListQuery(tag, hideCompleted);
+		if (qs.length > 0) {
+			return qs;
 		}
-		if (hideCompleted) {
-			params.set('hideCompleted', '1');
-		}
-		const qs = params.toString();
-		return qs.length > 0 ? `?${qs}` : '?';
+		return '?';
 	}
 </script>
 

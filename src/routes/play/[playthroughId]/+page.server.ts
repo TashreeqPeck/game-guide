@@ -1,4 +1,5 @@
-import { error, fail } from '@sveltejs/kit';
+import { error, fail, redirect } from '@sveltejs/kit';
+import { playthroughListQuery } from '$lib/playthrough-query';
 import type { Actions, PageServerLoad } from './$types';
 import { and, eq } from 'drizzle-orm';
 import { getDb } from '$lib/server/db/client';
@@ -142,7 +143,7 @@ export const load: PageServerLoad = async ({ params, locals, url }) => {
 };
 
 export const actions: Actions = {
-	toggle: async ({ request, locals, params }) => {
+	toggle: async ({ request, locals, params, url }) => {
 		const userId = locals.user?.id ?? '';
 		const playthrough = getPlaythroughForUser(userId, params.playthroughId);
 		if (playthrough === undefined) {
@@ -151,6 +152,8 @@ export const actions: Actions = {
 		const form = await request.formData();
 		const itemId = String(form.get('itemId') ?? '');
 		const checked = String(form.get('checked') ?? '0') === '1';
+		const filterTag = String(form.get('filterTag') ?? '');
+		const hideCompleted = String(form.get('hideCompleted') ?? '') === '1';
 		const exists = getDb()
 			.select()
 			.from(items)
@@ -160,6 +163,7 @@ export const actions: Actions = {
 			return fail(404, { message: 'Item not found' });
 		}
 		setItemChecked(playthrough.id, playthrough.guideId, itemId, checked);
-		return { ok: true };
+		const listQuery = playthroughListQuery(filterTag, hideCompleted);
+		throw redirect(303, `${url.pathname}${listQuery}`);
 	}
 };

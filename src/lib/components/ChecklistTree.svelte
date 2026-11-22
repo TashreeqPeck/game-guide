@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
+	import { invalidateAll } from '$app/navigation';
 	import Self from './ChecklistTree.svelte';
 	import type { ChecklistItem, ChecklistSection } from './checklist-types';
 
@@ -39,6 +41,33 @@
 		});
 		return has;
 	}
+
+	function toggleEnhance() {
+		return () => {
+			return async ({
+				result,
+				update
+			}: {
+				result: { type: string; location?: string | Location };
+				update: (opts?: { reset?: boolean }) => Promise<void>;
+			}) => {
+				if (result.type === 'redirect') {
+					const raw =
+						typeof result.location === 'string' ? result.location : result.location?.href ?? '';
+					let path = raw;
+					if (raw.startsWith('http://') || raw.startsWith('https://')) {
+						path = `${new URL(raw).pathname}${new URL(raw).search}`;
+					}
+					if (path.length > 0) {
+						history.replaceState(history.state, '', path);
+						await invalidateAll();
+					}
+				} else {
+					await update();
+				}
+			};
+		};
+	}
 </script>
 
 <ul class="space-y-3">
@@ -62,9 +91,16 @@
 							{#each section.items as item (item.id)}
 								{#if itemVisible(item)}
 									<li id={`item-${item.id}`}>
-										<form method="POST" action="?/toggle" class="flex min-h-11 items-start gap-3 rounded-xl bg-zinc-950 p-3">
+										<form
+											method="POST"
+											action="?/toggle"
+											use:enhance={toggleEnhance()}
+											class="flex min-h-11 items-start gap-3 rounded-xl bg-zinc-950 p-3"
+										>
 											<input type="hidden" name="itemId" value={item.id} />
 											<input type="hidden" name="checked" value={item.checked ? '0' : '1'} />
+											<input type="hidden" name="filterTag" value={filterTag} />
+											<input type="hidden" name="hideCompleted" value={hideCompleted ? '1' : '0'} />
 											<button
 												type="submit"
 												aria-pressed={item.checked}
