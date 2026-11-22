@@ -12,6 +12,8 @@ concurrency:
 jobs:
   ci:
     runs-on: ubuntu-latest
+    env:
+      HUSKY: 0
     steps:
       - uses: actions/checkout@v4
         with:
@@ -53,6 +55,8 @@ jobs:
           node-version: "22.17"
           cache: npm
       - run: npm ci --engine-strict=false
+        env:
+          HUSKY: 0
       - id: semantic
         uses: cycjimmy/semantic-release-action@v4
         env:
@@ -76,16 +80,27 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - id: image-tags
+        env:
+          VERSION: ${{ needs.release.outputs.new_release_version }}
+        run: |
+          major="${VERSION%%.*}"
+          rest="${VERSION#*.}"
+          minor="${rest%%.*}"
+          {
+            echo "tags<<EOF"
+            echo "ghcr.io/tashreeqpeck/game-guide:${VERSION}"
+            echo "ghcr.io/tashreeqpeck/game-guide:${major}.${minor}"
+            echo "ghcr.io/tashreeqpeck/game-guide:${major}"
+            echo "ghcr.io/tashreeqpeck/game-guide:latest"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
       - uses: docker/build-push-action@v6
         with:
           context: .
           push: true
           platforms: linux/amd64,linux/arm64
           build-args: APP_VERSION=${{ needs.release.outputs.new_release_version }}
-          tags: |
-            ghcr.io/tashreeqpeck/game-guide:${{ needs.release.outputs.new_release_version }}
-            ghcr.io/tashreeqpeck/game-guide:${{ needs.release.outputs.new_release_version.split('.')[0] }}.${{ needs.release.outputs.new_release_version.split('.')[1] }}
-            ghcr.io/tashreeqpeck/game-guide:${{ needs.release.outputs.new_release_version.split('.')[0] }}
-            ghcr.io/tashreeqpeck/game-guide:latest
+          tags: ${{ steps.image-tags.outputs.tags }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
