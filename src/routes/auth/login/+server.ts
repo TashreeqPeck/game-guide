@@ -1,6 +1,7 @@
 import { redirect } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { buildAuthorizationUrl } from '$lib/server/auth/oidc';
+import { redirectOrLocation } from '$lib/server/http-redirect';
 import { createAuthState, createPkcePair } from '$lib/server/auth/pkce';
 import { createSession, getSessionCookieName } from '$lib/server/auth/session';
 import { upsertUser } from '$lib/server/auth/users';
@@ -63,6 +64,6 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 			secure: env.nodeEnv === 'production',
 			maxAge: 600
 		});
-		throw redirect(302, authUrl.toString());
+		return redirectOrLocation(302, authUrl.toString());
 	}
 };

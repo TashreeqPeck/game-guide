@@ -1,6 +1,6 @@
-import { redirect } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { buildLogoutUrl } from '$lib/server/auth/oidc';
+import { redirectOrLocation } from '$lib/server/http-redirect';
 import { deleteSessionByToken, getSessionCookieName } from '$lib/server/auth/session';
 import { getEnv } from '$lib/server/env';
 
@@ -20,5 +20,5 @@ export const GET: RequestHandler = async ({ cookies }) => {
 		}
 	}
 
-	throw redirect(303, target);
+	return redirectOrLocation(303, target);
 };
