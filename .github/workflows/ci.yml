@@ -58,9 +58,19 @@ jobs:
         env:
           HUSKY: 0
       - id: semantic
-        uses: cycjimmy/semantic-release-action@v4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -o pipefail
+          npx semantic-release 2>&1 | tee semantic-release.log
+          if grep -Fq 'Published release' semantic-release.log; then
+            version=$(grep -E 'Published release [0-9]+\.[0-9]+\.[0-9]+' semantic-release.log | tail -1 | sed -E 's/.*Published release //')
+            echo "new_release_published=true" >> "$GITHUB_OUTPUT"
+            echo "new_release_version=${version}" >> "$GITHUB_OUTPUT"
+          else
+            echo "new_release_published=false" >> "$GITHUB_OUTPUT"
+            echo "new_release_version=" >> "$GITHUB_OUTPUT"
+          fi
 
   publish:
     if: needs.release.outputs.new_release_published == 'true'
