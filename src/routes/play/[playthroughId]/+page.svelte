@@ -3,6 +3,12 @@
 
 	let { data } = $props();
 
+	let tagsExpanded = $state(false);
+
+	const activeTagLabel = $derived(
+		data.filterTag.length > 0 ? data.filterTag : 'All tags'
+	);
+
 	function buildQuery(tag: string, hideCompleted: boolean) {
 		const params = new URLSearchParams();
 		if (tag.length > 0) {
@@ -12,7 +18,7 @@
 			params.set('hideCompleted', '1');
 		}
 		const qs = params.toString();
-		return qs.length > 0 ? `?${qs}` : '';
+		return qs.length > 0 ? `?${qs}` : '?';
 	}
 </script>
 
@@ -40,7 +46,34 @@
 				</a>
 			{/if}
 		</div>
-		<div class="mt-3 flex flex-wrap gap-2">
+		<div class="mt-3 flex flex-wrap items-center gap-2">
+			<button
+				type="button"
+				class="inline-flex min-h-11 items-center gap-2 rounded-xl border border-zinc-700 px-3 py-2 text-sm text-zinc-300 md:hidden"
+				aria-expanded={tagsExpanded}
+				onclick={() => {
+					tagsExpanded = !tagsExpanded;
+				}}
+			>
+				Tags: {activeTagLabel}
+				<span class="text-xs text-zinc-500" aria-hidden="true">{tagsExpanded ? '▲' : '▼'}</span>
+			</button>
+			<a
+				href={buildQuery(data.filterTag, !data.hideCompleted)}
+				class="min-h-11 rounded-xl border border-zinc-700 px-3 py-2 text-sm text-zinc-300"
+			>
+				{data.hideCompleted ? 'Show completed' : 'Hide completed'}
+			</a>
+			<a
+				href={`/play/${data.playthrough.id}/history`}
+				class="min-h-11 rounded-xl border border-zinc-700 px-3 py-2 text-sm text-zinc-300"
+			>
+				History
+			</a>
+		</div>
+		<div
+			class="mt-2 flex flex-wrap gap-2 {tagsExpanded ? 'flex' : 'hidden'} md:mt-3 md:flex"
+		>
 			<a
 				href={buildQuery('', data.hideCompleted)}
 				class="min-h-11 rounded-xl px-3 py-2 text-sm {data.filterTag === ''
@@ -59,18 +92,6 @@
 					{tag}
 				</a>
 			{/each}
-			<a
-				href={buildQuery(data.filterTag, !data.hideCompleted)}
-				class="min-h-11 rounded-xl border border-zinc-700 px-3 py-2 text-sm text-zinc-300"
-			>
-				{data.hideCompleted ? 'Show completed' : 'Hide completed'}
-			</a>
-			<a
-				href={`/play/${data.playthrough.id}/history`}
-				class="min-h-11 rounded-xl border border-zinc-700 px-3 py-2 text-sm text-zinc-300"
-			>
-				History
-			</a>
 		</div>
 	</div>
 
