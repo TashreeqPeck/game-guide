@@ -27,6 +27,7 @@ export const FORMAT_RULES = [
 	'Each uploaded file defines one game and one guide.',
 	'Section and item ids must be unique and stable across re-uploads.',
 	'A section may contain body_md, child sections, and/or items.',
+	'body_md and notes_md support GitHub-flavored Markdown.',
 	'Only items are checkable; progress is tracked per playthrough.',
 	'tags are optional free-form strings used for filtering in the UI.'
 ];
