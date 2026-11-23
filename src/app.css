@@ -25,8 +25,48 @@ body {
 	@apply my-2;
 }
 
+.prose-guide :is(h1, h2, h3, h4, h5, h6) {
+	@apply my-3 font-semibold text-zinc-100;
+}
+
+.prose-guide h1 {
+	@apply text-xl;
+}
+
+.prose-guide h2 {
+	@apply text-lg;
+}
+
+.prose-guide :is(ul, ol) {
+	@apply pl-5;
+}
+
+.prose-guide ul {
+	@apply list-disc;
+}
+
+.prose-guide ol {
+	@apply list-decimal;
+}
+
 .prose-guide a {
 	@apply text-blue-400 underline;
+}
+
+.prose-guide blockquote {
+	@apply my-3 border-l-2 border-zinc-600 pl-3 text-zinc-400;
+}
+
+.prose-guide :not(pre) > code {
+	@apply rounded bg-zinc-800 px-1 py-0.5 text-xs text-zinc-100;
+}
+
+.prose-guide pre {
+	@apply my-3 overflow-x-auto rounded bg-zinc-950 p-3 text-xs;
+}
+
+.prose-guide hr {
+	@apply my-3 border-zinc-700;
 }
 
 .prose-guide table {

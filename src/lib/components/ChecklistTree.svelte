@@ -27,15 +27,15 @@
 		return visible;
 	}
 
-	function sectionHasVisibleItems(section: ChecklistSection): boolean {
-		let has = false;
+	function sectionHasVisibleContent(section: ChecklistSection): boolean {
+		let has = section.bodyHtml.length > 0;
 		section.items.forEach((item) => {
 			if (itemVisible(item)) {
 				has = true;
 			}
 		});
 		section.children.forEach((child) => {
-			if (sectionHasVisibleItems(child)) {
+			if (sectionHasVisibleContent(child)) {
 				has = true;
 			}
 		});
@@ -72,7 +72,7 @@
 
 <ul class="space-y-3">
 	{#each sections as section (section.id)}
-		{#if sectionHasVisibleItems(section)}
+		{#if sectionHasVisibleContent(section)}
 			<li class="rounded-2xl border border-zinc-800 bg-zinc-900">
 				<details class="group" open>
 					<summary class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-2 px-4 py-3">
